@@ -1,16 +1,17 @@
 const LOAD = 'redux-example/hello/LOAD';
 const LOAD_SUCCESS = 'redux-example/hello/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux-example/hello/LOAD_FAIL';
-const EDIT_START = 'redux-example/hello/EDIT_START';
-const EDIT_STOP = 'redux-example/hello/EDIT_STOP';
-const SAVE = 'redux-example/hello/SAVE';
-const SAVE_SUCCESS = 'redux-example/hello/SAVE_SUCCESS';
-const SAVE_FAIL = 'redux-example/hello/SAVE_FAIL';
+
+const LOAD_MORE = 'redux-example/hello/LOAD_MORE';
+const LOAD_MORE_SUCCESS = 'redux-example/hello/LOAD_MORE_SUCCESS';
+const LOAD_MORE_FAIL = 'redux-example/hello/LOAD_MORE_FAIL';
 
 const initialState = {
   loaded: false,
   editing: {},
-  saveError: {}
+  saveError: {},
+  result: [],
+  meta: {}
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -21,11 +22,19 @@ export default function reducer(state = initialState, action = {}) {
         loading: true
       };
     case LOAD_SUCCESS:
+      let result = [];
+      let meta = {};
+      if(action.result && action.result.data)
+      {
+        result = action.result.data.result;
+        meta = action.result.data.meta;
+      }
       return {
         ...state,
         loading: false,
         loaded: true,
-        data: action.result,
+        result,
+        meta,
         error: null
       };
     case LOAD_FAIL:
@@ -36,47 +45,28 @@ export default function reducer(state = initialState, action = {}) {
         data: null,
         error: action.error
       };
-    case EDIT_START:
+    case LOAD_MORE:
       return {
         ...state,
-        editing: {
-          ...state.editing,
-          [action.id]: true
-        }
+        loading: true,
       };
-    case EDIT_STOP:
+    case LOAD_MORE_SUCCESS:
+
       return {
         ...state,
-        editing: {
-          ...state.editing,
-          [action.id]: false
-        }
+        loading: false,
+        loaded: true,
+        data: action.result,
+        error: null
       };
-    case SAVE:
-      return state; // 'saving' flag handled by redux-form
-    case SAVE_SUCCESS:
-      const data = [...state.data];
-      data[action.result.id - 1] = action.result;
+    case LOAD_MORE_FAIL:
       return {
         ...state,
-        data: data,
-        editing: {
-          ...state.editing,
-          [action.id]: false
-        },
-        saveError: {
-          ...state.saveError,
-          [action.id]: null
-        }
+        loading: false,
+        loaded: false,
+        data: null,
+        error: action.error
       };
-    case SAVE_FAIL:
-      return typeof action.error === 'string' ? {
-        ...state,
-        saveError: {
-          ...state.saveError,
-          [action.id]: action.error
-        }
-      } : state;
     default:
       return state;
   }
@@ -86,27 +76,16 @@ export function isLoaded(globalState) {
   return globalState.hello && globalState.hello.loaded;
 }
 
-export function load() {
+export function load(pageSize = 10, page = 0) {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/widget/load/param1/param2') // params not used, just shown as demonstration
+    promise: (client) => client.get('/v1/v1/class/esp/webinars/0?page=' + page + '&pageSize=' + pageSize) // params not used, just shown as demonstration
   };
 }
 
-export function save(widget) {
+export function loadMore(pageSize = 10, page = 1) {
   return {
-    types: [SAVE, SAVE_SUCCESS, SAVE_FAIL],
-    id: widget.id,
-    promise: (client) => client.post('/widget/update', {
-      data: widget
-    })
+    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
+    promise: (client) => client.get('/v1/v1/class/esp/webinars/0?page=' + page + '&pageSize=' + pageSize) // params not used, just shown as demonstration
   };
-}
-
-export function editStart(id) {
-  return { type: EDIT_START, id };
-}
-
-export function editStop(id) {
-  return { type: EDIT_STOP, id };
 }

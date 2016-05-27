@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import * as helloActions from 'redux/modules/hello';
 import {isLoaded, load as loadHello} from 'redux/modules/hello';
 import {initializeWithKey} from 'redux-form';
-import { WidgetForm } from 'components';
+import { WebinarListing } from 'components';
 import { asyncConnect } from 'redux-async-connect';
 
 @asyncConnect([{
@@ -17,29 +17,22 @@ import { asyncConnect } from 'redux-async-connect';
 }])
 @connect(
   state => ({
-    hello: state.hello.data,
-    editing: state.hello.editing,
-    error: state.hello.error,
+    result: state.hello.result,
+    meta: state.hello.meta,
     loading: state.hello.loading
   }),
   {...helloActions, initializeWithKey })
 export default class Hello extends Component {
   static propTypes = {
-    hello: PropTypes.array,
     error: PropTypes.string,
     loading: PropTypes.bool,
-    initializeWithKey: PropTypes.func.isRequired,
-    editing: PropTypes.object.isRequired,
     load: PropTypes.func.isRequired,
-    editStart: PropTypes.func.isRequired
+    result: PropTypes.array,
+    meta: PropTypes.object
   };
 
   render() {
-    const handleEdit = (hello) => {
-      const {editStart} = this.props; // eslint-disable-line no-shadow
-      return () => editStart(String(hello.id));
-    };
-    const {hello, error, editing, loading, load} = this.props;
+    const {result, meta, error, loading, load} = this.props;
     let refreshClassName = 'fa fa-refresh';
     if (loading) {
       refreshClassName += ' fa-spin';
@@ -70,37 +63,8 @@ export default class Hello extends Component {
           {' '}
           {error}
         </div>}
-        {hello && hello.length &&
-        <table className="table table-striped">
-          <thead>
-          <tr>
-            <th className={styles.idCol}>ID</th>
-            <th className={styles.colorCol}>Color</th>
-            <th className={styles.sprocketsCol}>Sprockets</th>
-            <th className={styles.ownerCol}>Owner</th>
-            <th className={styles.buttonCol}></th>
-          </tr>
-          </thead>
-          <tbody>
-          {
-            hello.map((singleHello) => editing[singleHello.id] ?
-              <WidgetForm formKey={String(singleHello.id)} key={String(singleHello.id)} initialValues={singleHello}/> :
-              <tr key={singleHello.id}>
-                <td className={styles.idCol}>{singleHello.id}</td>
-                <td className={styles.colorCol}>{singleHello.color}</td>
-                <td className={styles.sprocketsCol}>{singleHello.sprocketCount}</td>
-                <td className={styles.ownerCol}>{singleHello.owner}</td>
-                <td className={styles.buttonCol}>
-                  <button className="btn btn-primary" onClick={handleEdit(singleHello)}>
-                    <i className="fa fa-pencil"/> Edit
-                  </button>
-                </td>
-              </tr>)
-          }
-          </tbody>
-        </table>}
+        <WebinarListing result={result} meta={meta} />)
       </div>
     );
   }
 }
-
