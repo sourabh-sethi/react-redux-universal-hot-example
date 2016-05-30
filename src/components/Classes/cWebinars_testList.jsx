@@ -173,66 +173,17 @@ const EachWebinarRoww = React.createClass({
     }
 });
 @connect(
-  state => ({
-    saveError: state.widgets.saveError
-  }),
+  state => ({}),
   dispatch => bindActionCreators(helloActions, dispatch)
 )
 export default class WebinarListing extends Component {
-  // static propTypes = {
-  //   fields: PropTypes.object.isRequired,
-  //   editStop: PropTypes.func.isRequired,
-  //   handleSubmit: PropTypes.func.isRequired,
-  //   invalid: PropTypes.bool.isRequired,
-  //   pristine: PropTypes.bool.isRequired,
-  //   save: PropTypes.func.isRequired,
-  //   submitting: PropTypes.bool.isRequired,
-  //   saveError: PropTypes.object,
-  //   formKey: PropTypes.string.isRequired,
-  //   values: PropTypes.object.isRequired
-  // };
-    loadWebinarsFromServer = function (payload, isAppend) {
-        const _this = this;
-        const allRecordsFetched = _this.state.meta.page == _this.state.meta.totalPages;
 
-        if (payload && !allRecordsFetched) {
-            $.ajax({
-                url: '',
-                data: {payload: payload},
-                cache: false,
-                dataType: 'json',
-                contentType: "application/json",
-                type: 'GET',
-                success: function (response) {
-                    try {
-                        const state = {
-                            meta: _this.state.meta,
-                            data: _this.state.data
-                        };
-
-                        if (isAppend) {
-                            state.data = state.data.concat(response.result);
-                        } else {
-                            state.data = response.result;
-                        }
-
-                        state.meta = response.meta;
-
-                        _this.setState(state);
-                    } catch (ex) {
-                        console.log('Exception inside loadWebinarsFromServer ajax success: ' + ex.message);
-                    }
-                },
-                error: function (xhr, status, err) {
-                    console.log('Exception inside loadWebinarsFromServer ajax error: ' + err);
-                }
-            });
-        }
-    };
-    viewMoreClickHandler =function (event) {
-        event.preventDefault();
-
-    };
+  static propTypes = {
+    error: PropTypes.string,
+    loading: PropTypes.bool,
+    load: PropTypes.func.isRequired,
+    loadMore: PropTypes.func.isRequired
+  };
     sortClickHandler = function (event) {
         event.preventDefault();
 
@@ -256,10 +207,17 @@ export default class WebinarListing extends Component {
         {
           return (<div>Loading....</div>)
         }
-
+        const loadMore = this.props.loadMore;
+        const page = meta.page+1;
+        const pageSize = meta.pageSize;
+        const viewMoreClickHandler = function (event) {
+          event.preventDefault();
+          loadMore(pageSize,page+1);
+        };
+// <EachWebinarRoww key={eachItem.classId} data={eachItem} />
         const itemList = items.map(function(eachItem){
             return (
-                     <EachWebinarRoww key={eachItem.classId} data={eachItem} />
+                     <EachWebinarRoww data={eachItem} />
                 )
         });
         return (
@@ -273,7 +231,7 @@ export default class WebinarListing extends Component {
                     {
                         (meta.page === meta.totalPages - 1) ?
                         null :
-                        <div className="cta wired" onClick={this.viewMoreClickHandler}>
+                          <div className="cta wired" onClick={viewMoreClickHandler}>
                             <a href="#"><FormattedMessage id='viewMore'/></a>
                         </div>
                     }

@@ -51,12 +51,20 @@ export default function reducer(state = initialState, action = {}) {
         loading: true,
       };
     case LOAD_MORE_SUCCESS:
-
+      let { result: resultMore, meta: metaMore} = state;
+      let actionResult = action.result;
+      if(actionResult && actionResult.data)
+      {
+        let data = actionResult.data;
+        resultMore.push(...data.result);
+        metaMore = data.meta;
+      }
       return {
         ...state,
         loading: false,
         loaded: true,
-        data: action.result,
+        result: resultMore,
+        meta: metaMore,
         error: null
       };
     case LOAD_MORE_FAIL:
@@ -85,7 +93,7 @@ export function load(pageSize = 10, page = 0) {
 
 export function loadMore(pageSize = 10, page = 1) {
   return {
-    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
+    types: [LOAD_MORE, LOAD_MORE_SUCCESS, LOAD_MORE_FAIL],
     promise: (client) => client.get('/v1/v1/class/esp/webinars/0?page=' + page + '&pageSize=' + pageSize) // params not used, just shown as demonstration
   };
 }
