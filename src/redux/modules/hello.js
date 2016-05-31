@@ -24,8 +24,7 @@ export default function reducer(state = initialState, action = {}) {
     case LOAD_SUCCESS:
       let result = [];
       let meta = {};
-      if(action.result && action.result.data)
-      {
+      if (action.result && action.result.data) {
         result = action.result.data.result;
         meta = action.result.data.meta;
       }
@@ -52,11 +51,10 @@ export default function reducer(state = initialState, action = {}) {
       };
     case LOAD_MORE_SUCCESS:
       let { result: resultMore, meta: metaMore} = state;
-      let actionResult = action.result;
-      if(actionResult && actionResult.data)
-      {
-        let data = actionResult.data;
-        resultMore.push(...data.result);
+      const actionResult = action.result;
+      if (actionResult && actionResult.data) {
+        const data = actionResult.data;
+        resultMore = (new Array()).concat(resultMore, data.result);
         metaMore = data.meta;
       }
       return {

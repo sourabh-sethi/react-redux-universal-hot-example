@@ -21,8 +21,8 @@ import getRoutes from './routes';
 import i18n from './i18n/index.js';
 
 const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
-// const targetUrl2 = 'http://www.catapult-system-product-name.com:8051';
-const targetUrl2 = 'http://localhost:8051';
+const targetUrl2 = 'http://www.catapult-system-product-name.com:8051';
+//const targetUrl2 = 'http://localhost:8051';
 const pretty = new PrettyError();
 const app = new Express();
 const server = new http.Server(app);
