@@ -172,7 +172,10 @@ const EachWebinarRoww = React.createClass({
   }
 });
 @connect(
-  state => ({}),
+  state => ({
+    result: state.hello.result,
+    meta: state.hello.meta
+  }),
   dispatch => bindActionCreators(helloActions, dispatch)
 )
 export default class WebinarListing extends Component {
@@ -181,7 +184,9 @@ export default class WebinarListing extends Component {
     error: PropTypes.string,
     loading: PropTypes.bool,
     load: PropTypes.func.isRequired,
-    loadMore: PropTypes.func.isRequired
+    loadMore: PropTypes.func.isRequired,
+    result: PropTypes.array,
+    meta: PropTypes.object
   };
     sortClickHandler = function(event) {
       event.preventDefault();
@@ -213,7 +218,7 @@ export default class WebinarListing extends Component {
         event.preventDefault();
         loadMore(pageSize, page);
       };
-      {/*<EachWebinarRoww key={eachItem.classId} data={eachItem} />*/}
+      {/* <EachWebinarRoww key={eachItem.classId} data={eachItem} /> */}
       const itemList = items.map(function(eachItem) {
         return (
                      <EachWebinarRoww key={eachItem.classId} data={eachItem} />

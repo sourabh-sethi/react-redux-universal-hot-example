@@ -17,8 +17,6 @@ import { asyncConnect } from 'redux-async-connect';
 }])
 @connect(
   state => ({
-    result: state.hello.result,
-    meta: state.hello.meta,
     loading: state.hello.loading
   }),
   {...helloActions, initializeWithKey })
@@ -26,13 +24,11 @@ export default class Hello extends Component {
   static propTypes = {
     error: PropTypes.string,
     loading: PropTypes.bool,
-    load: PropTypes.func.isRequired,
-    result: PropTypes.array,
-    meta: PropTypes.object
+    load: PropTypes.func.isRequired
   };
 
   render() {
-    const {result, meta, error, loading, load} = this.props;
+    const {error, loading, load} = this.props;
     let refreshClassName = 'fa fa-refresh';
     if (loading) {
       refreshClassName += ' fa-spin';
@@ -63,7 +59,7 @@ export default class Hello extends Component {
           {' '}
           {error}
         </div>}
-        <WebinarListing result={result} meta={meta} />)
+        <WebinarListing />)
       </div>
     );
   }
