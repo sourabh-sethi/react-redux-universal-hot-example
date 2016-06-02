@@ -31,16 +31,15 @@ class Breadcrum extends Component {
 
 const getStatusMessage = (ref, status) => {
   let msg = '';
-  const obj = ref;
   switch (status) {
     case 'DONE':
-      msg = obj.getIntlMessage('Thisclassisover');// 'This class is over';
+      msg = 'Thisclassisover';// 'This class is over';
       break;
     case 'CANCELLEDBYTEACHER':
-      msg = obj.getIntlMessage('ThisSessioncancelled');// 'This class has been Cancelled';
+      msg = 'ThisSessioncancelled';// 'This class has been Cancelled';
       break;
     case 'EXPIRED':
-      msg = obj.getIntlMessage('Thissessionnotheld');// 'This class was not held';
+      msg = 'Thissessionnotheld';// 'This class was not held';
       break;
 
     default:
@@ -88,10 +87,10 @@ class ClassScheduleEach extends Component {
                     <div className="clearfix">
                         <div className="col-1">
                             <p className="recurringDate">{data.startAt}
-                                <FormattedDate value={data.startAt} format="webinars" />
+                                <FormattedDate value={data.startAt} />
                             </p>
                             <p><FormattedMessage id="membersAttended"/>: {data.membersAttended}</p>
-                            <p>{msg}</p>
+                            <p><FormattedMessage id={msg}/></p>
                         </div>
                         <ButtonViewRecording data={data.linkViewRecording} />
                     </div>
@@ -109,7 +108,7 @@ class ClassSchedule extends Component {
     const data = this.props.data;
     const scheduleItems = data.map(function createClassSchedule(eachScheduleItem) {
       return (
-                    <ClassScheduleEach key={eachScheduleItem.sessionId} data={eachScheduleItem} />
+                    <ClassScheduleEach data={eachScheduleItem} />
                 );
     });
     return (
@@ -120,6 +119,59 @@ class ClassSchedule extends Component {
   }
 }
 
+class DateOnCalendarWithTime extends Component {
+  static propTypes = {
+    date: PropTypes.string
+  };
+
+  render = function render() {
+    const {date} = this.props;
+    if (date !== undefined) {
+      return (
+        <span>
+          <span className="calenderDate">
+            <FormattedDate value={date} day="2-digit" /><br/>
+            <FormattedDate value={date} month="short" />
+          </span>
+          <FormattedDate value={date} year="numeric"/>&#160;
+          <FormattedTime value={date} hour="2-digit" minute="2-digit" />
+        </span>
+      );
+    }
+  }
+}
+class TutorProfilePic extends Component {
+  static propTypes = {
+    tutor: PropTypes.object
+  };
+
+  render = function render() {
+    const {tutor} = this.props;
+    if (tutor !== undefined) {
+      let genderCity = '';
+      if (tutor.gender) {
+        genderCity = tutor.gender;
+        if (tutor.city) {
+          genderCity += ' | ' + tutor.city;
+        }
+        if (tutor.country) {
+          genderCity += ', ' + tutor.country;
+        }
+      }
+      return (
+      <div className="col-1">
+          <figure className="courseImg inline">
+              {tutor.profilePic ? <img src={tutor.profilePic} alt="" /> : '' }
+              <figcaption className="captionWrap">
+                  {tutor.name ? tutor.name : '' }
+              </figcaption>
+              <p className="captionWrap"> {genderCity}</p>
+          </figure>
+      </div>
+      );
+    }
+  }
+}
 class MetaDetail extends Component {
   static propTypes = {
     data: PropTypes.object
@@ -127,6 +179,7 @@ class MetaDetail extends Component {
 
   render = function render() {
     const data = this.props.data;
+    const {tutor} = data;
     if (!data) {
       return (
            <section id="webinarsTabs">Loading...</section>
@@ -149,16 +202,16 @@ class MetaDetail extends Component {
                                 <p>{data.description}</p>
                             </div>
                         </div>
-                        <div data-tab="aboutHost" className="moduleWrapper">
+                        {tutor ? <div data-tab="aboutHost" className="moduleWrapper">
                             <div className="primaryDetail">
-                                <h2 className="title">{data.tutor.name}</h2>
+                                <h2 className="title">{tutor.name}</h2>
                                 <figure className="host">
-                                    <img src={data.tutor.profilePic} alt="" />
-                                    <figcaption>{data.tutor.name}</figcaption>
+                                    <img src={tutor.profilePic} alt="" />
+                                    <figcaption>{tutor.name}</figcaption>
                                 </figure>
                                 <p dangerouslySetInnerHTML={{__html: data.tutor.presenterInfo}} />
                             </div>
-                        </div>
+                        </div> : ''}
                         <div data-tab="discussion" className="moduleWrapper">
                             <div className="primaryDetail">
                                 <h2 className="title"><FormattedMessage id="discussionThread"/> <span className="count">{/* data.discussion.count */}0</span></h2>
@@ -196,15 +249,10 @@ export default class WebinarDetail extends Component {
            <section id="webinarsTabs">Loading...</section>
          );
     }
-    let genderCity = '';
-    const {tutor} = data;
-    if (tutor && tutor.gender) {
-      genderCity = tutor.gender;
-      if (tutor.city) genderCity += ' | ' + tutor.city;
-      if (tutor.country) genderCity += ', ' + tutor.country;
-    }
-    const status = data.classStart.status;
+    const tutor = data.tutor;
+    const {status, date} = data.classStart ? data.classStart : {};
     const msg = getStatusMessage(this, status);
+    const classStats = data.classStats || {};
 
     return (
             <div>
@@ -213,51 +261,38 @@ export default class WebinarDetail extends Component {
                     <div className="moduleWrapper">
                         <ul className="courseList details">
                             <li className="item clearfix">
-                                <div className="col-1">
-                                    <figure className="courseImg inline">
-                                        <img src={data.tutor.profilePic} alt="" />
-                                        <figcaption className="captionWrap">
-                                            {data.tutor.name}
-                                        </figcaption>
-                                        <p className="captionWrap"> {genderCity}</p>
-                                    </figure>
-                                </div>
+                                <TutorProfilePic tutor={tutor}/>
                                 <div className="col-2 content">
                                     <h2>{data.classTitle}</h2>
+                                    <DateOnCalendarWithTime date={date} />
                                     <div className="relatedOpt">
                                         <ul className="placed">
                                             <li>
-                                                <span className="calenderDate">
-                                                	<FormattedDate value={data.classStart.date} day="2-digit" /><br/>
-                                                	<FormattedDate value={data.classStart.date} month="short" />
-                                                </span>
-                                                <FormattedDate value={data.classStart.date} year="numeric"/>&#160;
-                                                <FormattedTime value={data.classStart.date} hour="2-digit" minute="2-digit" />
-                                                <span className="date">{data.classStats.status}</span>
-
+                                                <DateOnCalendarWithTime date={date}/>
+                                                <span className="date">{classStats.status}</span>
                                             </li>
                                         </ul>
                                     </div>
                                     <div className="classFixtures hide">
                                         <p>{data.classFixtures.status}</p>
                                         <div className="cta filledOrng2 inline">
-                                            <a href={data.classFixtures.linkViewRecording}>{this.getIntlMessage('viewRecording')}</a>
+                                            <a href={data.classFixtures.linkViewRecording}><FormattedMessage id="viewRecording"/></a>
                                         </div>&#160;&#160;
                                         <div className="cta filledOrng2 inline">
-                                            <a href={data.classFixtures.linkViewRecording}>{this.getIntlMessage('downloadRecording')}</a>
+                                            <a href={data.classFixtures.linkViewRecording}><FormattedMessage id="downloadRecording"/></a>
                                         </div>
                                     </div>
                                     <div className="innerTabsWrap">
                                         <ul className="tabs clearfix">
-                                            <li data-tab="schedule" className="active"><a href="#">{this.getIntlMessage('classSchedule')}</a></li>
-                                            <li data-tab="sessions"><a href="#">{this.getIntlMessage('sessionsJoinedByYou')}</a></li>
+                                            <li data-tab="schedule" className="active"><a href="#"><FormattedMessage id="classSchedule"/></a></li>
+                                            <li data-tab="sessions"><a href="#"><FormattedMessage id="sessionsJoinedByYou"/></a></li>
                                         </ul>
                                         <div className="tabsContentWrap">
                                             <div data-tab="schedule" className="contentOfTab">
                                                 <ClassSchedule data={data.classSessions} />
                                             </div>
                                             <div data-tab="sessions" className="contentOfTab">
-                                                <p>{this.getIntlMessage('recurringClassSeriesNotJoined')}. </p>
+                                                <p><FormattedMessage id="recurringClassSeriesNotJoined"/>. </p>
                                             </div>
                                         </div>
                                     </div>
@@ -267,13 +302,13 @@ export default class WebinarDetail extends Component {
                                         <li className="cta noRadius">
                                             <ul className="type">
                                                 <li>
-                                                    <span className="no">{data.classStats.durationInMins}</span> {this.getIntlMessage('minutes')}
+                                                    <span className="no">{classStats.durationInMins}</span> <FormattedMessage id="minutes"/>
                                                 </li>
                                                 <li>
-                                                    <span className="no">{data.classStats.attendesCount}</span> {this.getIntlMessage('attendees')}
+                                                    <span className="no">{classStats.attendesCount}</span> <FormattedMessage id="attendees"/>
                                                 </li>
                                             </ul>
-                                            <span className="msg"> {msg}</span>
+                                            <span className="msg"><FormattedMessage id={msg}/></span>
                                         </li>
                                     </ul>
                                 </div>

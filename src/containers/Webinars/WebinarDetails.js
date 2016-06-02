@@ -8,20 +8,20 @@ import { asyncConnect } from 'redux-async-connect';
 
 @asyncConnect([{
   deferred: true,
-  promise: ({store: {dispatch, getState}}) => {
+  promise: ({store: {dispatch, getState}, params}) => {
     if (!isLoaded(getState())) {
-      // let idClass = this.props.params.idClass;
-      // if (isNaN(idClass)) {
-      //   idClass = idClass.subtring(0, idClass.indexOf('-'));
-      // }
-      return dispatch(load());
+      let idClass = params.idClass;
+      if (isNaN(idClass)) {
+        idClass = idClass.substring(0, idClass.indexOf('-'));
+      }
+      return dispatch(load(idClass));
     }
   }
 }])
 @connect(
   state => ({
     loading: state.webinarDetails.loading,
-    data: state.webinarDetails.data
+    details: state.webinarDetails.details
   }),
   {...actions })
 export default class WebinarDetails extends Component {
@@ -48,7 +48,7 @@ export default class WebinarDetails extends Component {
             <i className={refreshClassName}/> {' '} Reload Hello
           </button>
         </h1>
-        <Helmet title="{params.idClass} Webinar Details"/>
+        <Helmet title={' Webinar Details: ' + params.idClass}/>
         {error &&
         <div className="alert alert-danger" role="alert">
           <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

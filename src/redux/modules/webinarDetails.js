@@ -3,8 +3,7 @@ const LOAD_SUCCESS = 'redux-example/webinar/details/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux-example/webinar/details/LOAD_FAIL';
 
 const initialState = {
-  loaded: false,
-  details: {}
+  loaded: false
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -15,7 +14,7 @@ export default function reducer(state = initialState, action = {}) {
         loading: true
       };
     case LOAD_SUCCESS:
-      let details = {};
+      let details;
       if (action.result && action.result.data) {
         details = action.result.data;
       }
