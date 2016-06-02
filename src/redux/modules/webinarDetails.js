@@ -42,7 +42,7 @@ export function isLoaded(globalState) {
   return globalState.webinarDetails && globalState.webinarDetails.loaded;
 }
 
-export function load(id = 50372) {
+export function load(id) {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: (client) => client.get('/v1/v1/class/webinar/detail/' + id) // params not used, just shown as demonstration
