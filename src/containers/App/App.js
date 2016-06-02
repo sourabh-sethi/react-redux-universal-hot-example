@@ -32,6 +32,7 @@ import { asyncConnect } from 'redux-async-connect';
   {logout, pushState: push})
 export default class App extends Component {
   static propTypes = {
+    params: PropTypes.object.isRequired,
     children: PropTypes.object.isRequired,
     user: PropTypes.object,
     logout: PropTypes.func.isRequired,
@@ -60,7 +61,6 @@ export default class App extends Component {
   render() {
     const {user} = this.props;
     const styles = require('./App.scss');
-
     return (
       <div className={styles.app}>
         <Helmet {...config.app.head}/>

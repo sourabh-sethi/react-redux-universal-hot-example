@@ -22,7 +22,7 @@ import i18n from './i18n/index.js';
 
 const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
 const targetUrl2 = 'http://www.catapult-system-product-name.com:8051';
-//const targetUrl2 = 'http://localhost:8051';
+// const targetUrl2 = 'http://localhost:8051';
 const pretty = new PrettyError();
 const app = new Express();
 const server = new http.Server(app);
@@ -80,7 +80,7 @@ app.use((req, res) => {
   const client = new ApiClient(req);
   const memoryHistory = createHistory(req.originalUrl);
   const i18nInstance = new i18n();
-  const data = {"intl":{"locale":i18nInstance.getLanguage().getCulture(), "messages":i18nInstance.getCurrentLocalizedString()}};
+  const data = {'intl':{'locale':i18nInstance.getLanguage().getCulture(), 'messages':i18nInstance.getCurrentLocalizedString()}};
 
   const store = createStore(memoryHistory, client, data);
   const history = syncHistoryWithStore(memoryHistory, store);
@@ -97,13 +97,11 @@ app.use((req, res) => {
 
   match({ history, routes: getRoutes(store), location: req.originalUrl }, (error, redirectLocation, renderProps) => {
     if (redirectLocation) {
-      //  res.redirect(redirectLocation.pathname + redirectLocation.search);
-      res.status(200);
-      res.send('{"data":{"result":[{"title":"Live class to be added in course","startAt":"2013-06-15T06:48:00.000Z","status:"DONE","duration":60,"creator":{"profilePic":"http://wqimgpre.s3.amazonaws.com/ut/umt/Neha_Teacher1_teacher-1-jpg","name":"Neha_teacher1 LastName","country":"India","city":"Gurgaon","gender":"Female"},"classId:53344,"classUrl":"/online-class/49389-live-class-to-be-added-in-course","recordingStatus":"Done","recordingRequestLink:"45o   ","seoClassName":"/online-class/49389-live-class-to-be-added-in-course","idClassMaster":},{"title":"Live class to be added in course","startAt":"2013-06-15T06:48:00.000Z","status":"DONE","duration:60,"creator":{"profilePic":"http://wqimgpre.s3.amazonaws.com/ut/umt/Neha_Teacher1_teacher-1-77138.jpg","name":"Neha_teacher1 LastName","country":"India","city":"Gurgaon","gender":"Female"},"classId":53345,"classUrl":"/online-class/49390-live-class-to-be-added-in-course","recordingStatus":"Done","recordingRequestLink":"45p   ","seoClassName":"/online-class/49390-live-class-to-be-added-in-course","idClassMaster":49390},{"title":"Live class to be added in course","startAt":"2013-06-15T06:48:00.000Z","status":"DONE","duration":60,"creator":{"profilePic":"http://wqimgpre.s3.amazonaws.com/ut/umt/Neha_Teacher1_teacher-1-77138.jpg","name":"Neha_teacher1 LastName","country":"India","city":"Gurgaon","gender":"Female"},"classId":53346,"classUrl":"/online-class/49391-live-class-to-be-added-in-course","recordingStatus":"Done","recordingRequestLink:"45q   ","seoClassName":"/online-class/49391-live-class-to-be-added-in-course","idClassMaster":},{"title":"Shimla","startAt":"2013-06-22T06:56:00.000Z","status":"DONE","duration":60,"creator":{"profilePic:"http://wqimgpre.s3.amazonaws.com/ut/umt/Neha_Teacher1_teacher-1-77138.jpg","name":"Neha_teacher1 LastName,"country":"India","city":"Gurgaon","gender":"Female"},"classId":53350,"classUrl":"/online-class/49395-shimla,"recordingStatus":"Done","recordingRequestLink":"45r   ","seoClassName":"/online-class/49395-shimla,"idClassMaster":49395},{"title":"public class","startAt":"2013-06-28T13:14:00.000Z","status":"DONE,"duration":60,"creator":{"profilePic":"http://wqimgpre.s3.amazonaws.com/ut/umt/Neha_Teacher1_teacher-1-.jpg","name":"Neha_teacher1 LastName","country":"India","city":"Gurgaon","gender":"Female"},"classId:53775,"classUrl":"/online-class/49639-public-class","recordingStatus":"Done","recordingRequestLink:"45u   ","seoClassName":"/online-class/49639-public-class","idClassMaster":49639},{"title":"First mathematics","startAt":"2013-06-29T10:17:00.000Z","status":"DONE","duration":60,"creator":{"profilePic":"http://wqimgpre.s3.amazonaws.com/ut/umt/Neha_Teacher1_teacher-1-77138.jpg","name":"Neha_teacher1 LastName,"country":"India","city":"Gurgaon","gender":"Female"},"classId":53774,"classUrl":"/online-class/49638-first-class-mathematics,"recordingStatus":"Done","recordingRequestLink":"45t   ","seoClassName":"/online-class/49638-first-class-mathematics,"idClassMaster":49638},{"title":"IBPS Bank Promotion Test Preparation Course For Officers and Managers,"startAt":"2013-07-01T10:25:00.000Z","status":"DONE","duration":60,"creator":{"profilePic":"http://wqimgpre.s3.amazonaws.com/ut/umt/Neha_Teacher1_teacher-1-77138.jpg","name":"Neha_teacher1 LastName","country":"India","city":"Gurgaon","gender":"Female"},"classId":53789,"classUrl":"/online-class/49651-ibps-bank-promotion-test-preparation-course-for-officers-and-managers","recordingStatus":"Done","recordingRequestLink":"45y   ","seoClassName":"/online-class/49651-ibps-bank-promotion-test-preparation-course-for-officers-and-managers","idClassMaster":49651},{"title":"JetKing","startAt":"2013-07-01T10:40:00.000Z","status":"DONE","duration":60,"creator":{"profilePic":"http://wqimgpre.s3.amazonaws.com/ut/umt/Neha_Teacher1_teacher-1-77138.jpg","name":"Neha_teacher1 LastName","country":"India","city":"Gurgaon","gender":"Female"},"classId":53790,"classUrl":"/online-class/49652-jetking","recordingStatus":"Done","recordingRequestLink":"45z   ","seoClassName":"/online-class/49652-jetking","idClassMaster":49652},{"title":"Today Public  class","startAt":"2013-07-04T06:03:00.000Z","status":"DONE","duration":60,"creator":{"profilePic":"http://wqimgpre.s3.amazonaws.com/ut/umt/Neha_Teacher1_teacher-1-77138.jpg","name":"Neha_teacher1 LastName","country":"India","city":"Gurgaon","gender":"Female"},"classId":53810,"classUrl":"/online-class/49675-today-public-class","recordingStatus":"Done","recordingRequestLink":"46c   ","seoClassName":"/online-class/49675-today-public-class","idClassMaster":49675},{"title":"First public class","startAt":"2013-07-06T05:16:00.000Z","status":"DONE","duration":60,"creator":{"profilePic":"http://wqimgpre.s3.amazonaws.com/ut/umt/Neha_Teacher1_teacher-1-77138.jpg","name":"Neha_teacher1 LastName","country":"India","city":"Gurgaon","gender":"Female"},"classId":53777,"classUrl":"/online-class/49641-first-public-class","recordingStatus":"Done","recordingRequestLink":"45v   ","seoClassName":"/online-class/49641-first-public-class","idClassMaster":49641}],"meta":{"page":0,"pageSize":10,"totalPages":4,"order":"ASC","sortField":"TIME"}},"success":true,"errorCode":0}');    } else if (error) {      console.error('ROUTER ERROR:', pretty.render(error));
+      res.redirect(redirectLocation.pathname + redirectLocation.search);
     } else if (error) {
-        console.error('ROUTER ERROR:', pretty.render(error));
-        res.status(500);
-        hydrateOnClient();
+      console.error('ROUTER ERROR:', pretty.render(error));
+      res.status(500);
+      hydrateOnClient();
     } else if (renderProps) {
       loadOnServer({...renderProps, store, helpers: {client}}).then(() => {
         const component = (

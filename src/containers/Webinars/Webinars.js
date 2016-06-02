@@ -40,7 +40,7 @@ export default class Webinars extends Component {
     return (
       <div className={styles.hello + ' container'}>
         <h1>
-          Hello
+          Webinars Listing
           <button className={styles.refreshBtn + ' btn btn-success'} onClick={localLoad
           }>
             <i className={refreshClassName}/> {' '} Reload Hello

@@ -76,6 +76,7 @@
     "ThisSessioncancelled": "This class has been Cancelled",
     "WebinarLanguage": "This webinar is hosted in ",
     "RecordingInProgress": "Recording is in Progress",
-    "webinars" : "webinars"
+    "webinars" : "webinars",
+    "Webinars" : "Webinars"
 
 }

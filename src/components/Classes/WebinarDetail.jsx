@@ -17,7 +17,8 @@ class Breadcrum extends Component {
                         <div className="moduleWrapper">
                             <div className="moduleGutter">
                                 <ul className="wrapper clearfix">
-                                    <li><a href="/webinars/">Webinars</a></li>
+                                    <li><a href="/webinars/"><FormattedMessage id="Webinars"/></a></li>
+                                    <li> > </li>
                                     <li>{data}</li>
                                 </ul>
                             </div>
@@ -59,7 +60,7 @@ class ButtonViewRecording extends Component {
     if (data !== '#') {
       return (
             <div className="col-2">
-                <div className="cta filledOrng2 inline"><a href={data}>{this.getIntlMessage('viewRecording')}</a></div>
+                <div className="cta filledOrng2 inline"><a href={data}><FormattedMessage id="viewRecording"/></a></div>
             </div>
             );
     }
@@ -89,7 +90,7 @@ class ClassScheduleEach extends Component {
                             <p className="recurringDate">{data.startAt}
                                 <FormattedDate value={data.startAt} format="webinars" />
                             </p>
-                            <p>{this.getIntlMessage('membersAttended')}: {data.membersAttended}</p>
+                            <p><FormattedMessage id="membersAttended"/>: {data.membersAttended}</p>
                             <p>{msg}</p>
                         </div>
                         <ButtonViewRecording data={data.linkViewRecording} />
@@ -126,14 +127,18 @@ class MetaDetail extends Component {
 
   render = function render() {
     const data = this.props.data;
-
+    if (!data) {
+      return (
+           <section id="webinarsTabs">Loading...</section>
+         );
+    }
     return (
              <section id="webinarsTabs">
                     <div className="tabsHeadWrapper moduleBody">
                         <ul className="tabsHead moduleWrapper clearfix">
-                            <li className="overview" data-tab="aboutClass"><a href="#">{this.getIntlMessage('aboutTheClass')}</a></li>
-                            <li className="host" data-tab="aboutHost"><a href="#">{this.getIntlMessage('aboutTheHost')}</a></li>
-                            <li className="discussion" data-tab="discussion"><a href="#">{this.getIntlMessage('discussion')}</a></li>
+                            <li className="overview" data-tab="aboutClass"><a href="#"><FormattedMessage id="aboutTheClass"/></a></li>
+                            <li className="host" data-tab="aboutHost"><a href="#"><FormattedMessage id="aboutTheHost"/></a></li>
+                            <li className="discussion" data-tab="discussion"><a href="#"><FormattedMessage id="discussion"/></a></li>
                         </ul>
                     </div>
                     <div className="tabsContent moduleBody">
@@ -156,7 +161,7 @@ class MetaDetail extends Component {
                         </div>
                         <div data-tab="discussion" className="moduleWrapper">
                             <div className="primaryDetail">
-                                <h2 className="title">{this.getIntlMessage('discussionThread')} <span className="count">{/* data.discussion.count */}0</span></h2>
+                                <h2 className="title"><FormattedMessage id="discussionThread"/> <span className="count">{/* data.discussion.count */}0</span></h2>
                                 <div className="formElement">
                                     <form>
                                         <fieldset>
@@ -181,14 +186,23 @@ class MetaDetail extends Component {
 
 export default class WebinarDetail extends Component {
   static propTypes = {
-    data: PropTypes.obect
+    data: PropTypes.object
   };
 
   render = function render() {
-    const data = this.props.data;
-    let genderCity = data.tutor.gender;
-    if (data.tutor.city) genderCity += ' | ' + data.tutor.city;
-    if (data.tutor.country) genderCity += ', ' + data.tutor.country;
+    const {data} = this.props;
+    if (!data) {
+      return (
+           <section id="webinarsTabs">Loading...</section>
+         );
+    }
+    let genderCity = '';
+    const {tutor} = data;
+    if (tutor && tutor.gender) {
+      genderCity = tutor.gender;
+      if (tutor.city) genderCity += ' | ' + tutor.city;
+      if (tutor.country) genderCity += ', ' + tutor.country;
+    }
     const status = data.classStart.status;
     const msg = getStatusMessage(this, status);
 

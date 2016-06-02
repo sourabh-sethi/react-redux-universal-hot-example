@@ -6,6 +6,12 @@ const methods = ['get', 'post', 'put', 'patch', 'del'];
 function formatUrl(path) {
   const adjustedPath = path[0] !== '/' ? '/' + path : path;
   if (__SERVER__) {
+    console.log('path: ' + adjustedPath);
+    if (adjustedPath.startsWith('/v1/v1/')) {
+      const url = 'http://www.catapult-system-product-name.com:8051' + adjustedPath.replace('/v1/v1', '/v1');
+      console.log('url: ' + url);
+      return url;
+    }
     // Prepend host and port of the API server to the path.
     return 'http://' + config.apiHost + ':' + config.apiPort + adjustedPath;
   }
