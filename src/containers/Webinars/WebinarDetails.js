@@ -48,7 +48,7 @@ export default class WebinarDetails extends Component {
             <i className={refreshClassName}/> {' '} Reload Hello
           </button>
         </h1>
-        <Helmet title="Webinars"/>
+        <Helmet title="{params.idClass} Webinar Details"/>
         {error &&
         <div className="alert alert-danger" role="alert">
           <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
