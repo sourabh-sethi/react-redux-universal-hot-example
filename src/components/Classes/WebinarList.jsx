@@ -1,14 +1,20 @@
 import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import * as helloActions from 'redux/modules/hello';
 import {FormattedMessage, FormattedDate} from 'react-intl';
+import {Link } from 'react-router';
 
 // *****************************************************************
 //  YOUR CODE STARTS HERE
 // *****************************************************************
-const SortMenuItem = React.createClass({
-  clickHandler: function clickHandler(event) {
+class SortMenuItem extends Component {
+  static propTypes = {
+    getCurrentSortField: PropTypes.func.isRequired,
+    data: PropTypes.object,
+    sortClickHandler: PropTypes.func.isRequired,
+    setCurrentSortField: PropTypes.func.isRequired,
+    className: PropTypes.string
+  };
+
+  clickHandler= function clickHandler(event) {
     try {
       const currentSortField = this.props.getCurrentSortField();
       if (currentSortField.selectedField !== this.props.data.dataVal) {
@@ -18,8 +24,8 @@ const SortMenuItem = React.createClass({
     } catch (ex) {
       console.log('Exception inside SortMenuItem clickHandler: ' + ex);
     }
-  },
-  render: function render() {
+  };
+  render= function render() {
     const data = this.props.data;
 
     return (
@@ -29,29 +35,24 @@ const SortMenuItem = React.createClass({
                 </a>
             </li>
         );
-  }
-});
+  };
+}
 
-const SortMenu = React.createClass({
-  getInitialState: function getInitialState() {
-    return {
-      selectedField: ''
-    };
-  },
-  componentWillMount: function componentWillMount() {
+class SortMenu extends Component {
+  componentWillMount = function componentWillMount() {
     this.setState({
       selectedField: 'popularity'
     });
-  },
-  setCurrentSortField: function setCurrentSortField(sortField) {
+  };
+  setCurrentSortField = function setCurrentSortField(sortField) {
     this.setState({
       selectedField: sortField
     });
-  },
-  getCurrentSortField: function getCurrentSortField() {
+  };
+  getCurrentSortField = function getCurrentSortField() {
     return this.state;
-  },
-  render: function render() {
+  };
+  render = function render() {
     const _this = this;
     const defaultSortFields = [
       {
@@ -88,11 +89,14 @@ const SortMenu = React.createClass({
                 </li>
             </ul>
         );
-  }
-});
+  };
+}
 
-const TutorInfo = React.createClass({
-  render: function() {
+class TutorInfo extends Component {
+  static propTypes = {
+    data: PropTypes.object.isRequired
+  };
+  render = function render() {
     const data = this.props.data;
     return (
                 <figure className="userInfo clearfix">
@@ -104,33 +108,37 @@ const TutorInfo = React.createClass({
                 </figure>
             );
   }
-});
-const ViewRecordingBtn = React.createClass({
-  render: function() {
+}
+class ViewRecordingBtn extends Component {
+  static propTypes = {
+    data: PropTypes.object.isRequired
+  };
+
+  render = function render() {
     const data = this.props.data;
     if (data.recordingStatus === 'Deleted') {
       return (
                     <li>RECORDING IN PROGRESS</li>
                 );
-    }else {
-      return (
-                    <li className="cta filledOrng"><a href={data.recordingLink}>
-                      <FormattedMessage id='viewRecording'/>
-                    </a></li>
-                );
     }
+    return (
+                  <li className="cta filledOrng"><a href={data.recordingLink}>
+                    <FormattedMessage id="viewRecording"/>
+                  </a></li>
+              );
   }
-});
-
-const EachWebinarRoww = React.createClass({
-  render: function() {
+}
+class EachWebinarRoww extends Component {
+  static propTypes = {
+    data: PropTypes.object.isRequired
+  };
+  render = function render() {
     const data = this.props.data;
-    const tutor = data.tutorq;
     const duration = data.duration ? data.duration : 0;
     const attendeeCount = data.attendeeCount ? data.attendeeCount : 0;
     const title = data.title ? data.title : 'No Title';
     const classUrl = data.classUrl ? data.classUrl : '/online-class/' + data.idClassMaster + '-' + title + '/';
-        //http://myschool.wizqe.authordm.com/SignIn?returnUrl=/online-class/21142-public-class-0001
+    // http://myschool.wizqe.authordm.com/SignIn?returnUrl=/online-class/21142-public-class-0001
     const viewRecording = '/SignIn?returnUrl=' + classUrl;
 
     const recordingData = {};
@@ -140,22 +148,22 @@ const EachWebinarRoww = React.createClass({
     return (
                 <li className="item clearfix">
                     <div className="col-2 content">
-                        <h2><a href={classUrl}>{title}</a></h2>
-                        <p className="shortInfo"><FormattedMessage id='public'/></p>
+                        <h2><Link to={classUrl}>{title}</Link></h2>
+                        <p className="shortInfo"><FormattedMessage id="public"/></p>
                         <ul className="placed">
                             <li>
-                                <FormattedDate value={new Date(data.startAt)} month='long'
-                                day='numeric'
-                                weekday='long' />
+                                <FormattedDate value={new Date(data.startAt)} month="long"
+                                day="numeric"
+                                weekday="long" />
                                 <span className="date">{data.recordingStatus}</span>
                             </li>
                         </ul>
                         <ul className="type clearfix">
                             <li>
-                                <span className="no">{duration}</span> <FormattedMessage id='minutes'/>
+                                <span className="no">{duration}</span> <FormattedMessage id="minutes"/>
                             </li>
                             <li>
-                                <span className="no">{attendeeCount}</span> <FormattedMessage id='attendees'/>
+                                <span className="no">{attendeeCount}</span> <FormattedMessage id="attendees"/>
                             </li>
                         </ul>
                     </div>
@@ -170,25 +178,16 @@ const EachWebinarRoww = React.createClass({
                 </li>
             );
   }
-});
-@connect(
-  state => ({
-    result: state.hello.result,
-    meta: state.hello.meta
-  }),
-  dispatch => bindActionCreators(helloActions, dispatch)
-)
+}
 export default class WebinarListing extends Component {
 
   static propTypes = {
-    error: PropTypes.string,
-    loading: PropTypes.bool,
     load: PropTypes.func.isRequired,
     loadMore: PropTypes.func.isRequired,
     result: PropTypes.array,
     meta: PropTypes.object
   };
-    sortClickHandler = function(event) {
+    sortClickHandler = function sortClickHandler(event) {
       event.preventDefault();
 
       const payload = {};
@@ -205,21 +204,20 @@ export default class WebinarListing extends Component {
 
       this.loadWebinarsFromServer(payload, false);
     };
-    render = function() {
-      const {result : items, meta} = this.props;
-      if (items === undefined)
-        {
+    render = function render() {
+      const {result: items, meta} = this.props;
+      if (items === undefined) {
         return (<div>Loading....</div>);
       }
       const loadMore = this.props.loadMore;
       const page = meta.page + 1;
       const pageSize = meta.pageSize;
-      const viewMoreClickHandler = function(event) {
+      const viewMoreClickHandler = function viewMoreClickHandler(event) {
         event.preventDefault();
         loadMore(pageSize, page);
       };
-      {/* <EachWebinarRoww key={eachItem.classId} data={eachItem} /> */}
-      const itemList = items.map(function(eachItem) {
+
+      const itemList = items.map(function RowCreator(eachItem) {
         return (
                      <EachWebinarRoww key={eachItem.classId} data={eachItem} />
                 );
@@ -227,7 +225,7 @@ export default class WebinarListing extends Component {
       return (
             <section id="webinarListing" className="moduleBody">
                 <div className="moduleWrapper">
-                    <h1 className="title"><FormattedMessage id='webinars'/></h1>
+                    <h1 className="title"><FormattedMessage id="webinars"/></h1>
                     <SortMenu sortClickHandler={this.sortClickHandler} />
                     <ul className="courseList webinar">
                        {itemList}
@@ -236,7 +234,7 @@ export default class WebinarListing extends Component {
                         (meta.page === meta.totalPages - 1) ?
                         null :
                           <div className="cta wired" onClick={viewMoreClickHandler}>
-                            <a href="#"><FormattedMessage id='viewMore'/></a>
+                            <a href="#"><FormattedMessage id="viewMore"/></a>
                         </div>
                     }
                 </div>

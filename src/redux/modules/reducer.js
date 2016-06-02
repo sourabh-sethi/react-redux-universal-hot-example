@@ -8,7 +8,8 @@ import counter from './counter';
 import {reducer as form} from 'redux-form';
 import info from './info';
 import widgets from './widgets';
-import hello from './hello';
+import webinars from './webinars';
+import webinarDetails from './webinarDetails';
 import { intlReducer } from 'react-intl-redux';
 
 export default combineReducers({
@@ -23,6 +24,7 @@ export default combineReducers({
   }),
   info,
   widgets,
-  hello,
+  webinars,
+  webinarDetails,
   intl: intlReducer
 });

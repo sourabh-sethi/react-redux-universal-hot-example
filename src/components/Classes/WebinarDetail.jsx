@@ -1,23 +1,15 @@
+import React, {Component, PropTypes} from 'react';
+/* eslint-disable */
+import {FormattedMessage, FormattedDate, FormattedTime} from 'react-intl';
+import {Link } from 'react-router';
+/* eslint-enable */
 
-var isNode = typeof module !== 'undefined' && module.exports
-  , React = isNode ? require('react') : window.React
-  , ReactDOM = isNode ? require('react-dom') : window.ReactDOM
-  , ReactIntl = isNode ? require('react-intl') : window.ReactIntl;
-
-
-var IntlMixin = ReactIntl.IntlMixin;
-var FormattedMessage = ReactIntl.FormattedMessage;
-var FormattedDate = ReactIntl.FormattedDate;
-var FormattedTime = ReactIntl.FormattedTime;
-
-//*****************************************************************
-//  YOUR CODE STARTS HERE
-//*****************************************************************
-
-var Breadcrum = React.createClass({
-  mixins: [IntlMixin],
-  render: function() {
-    var data = this.props.data;
+class Breadcrum extends Component {
+  static propTypes = {
+    data: PropTypes.string
+  };
+  render = function render() {
+    const data = this.props.data;
 
     return (
                 <div>
@@ -34,20 +26,20 @@ var Breadcrum = React.createClass({
                 </div>
             );
   }
-});
+}
 
-var GetStatusMessage = function(ref, status) {
-  var msg = '';
-  var obj = ref;
+const getStatusMessage = (ref, status) => {
+  let msg = '';
+  const obj = ref;
   switch (status) {
     case 'DONE':
       msg = obj.getIntlMessage('Thisclassisover');// 'This class is over';
       break;
     case 'CANCELLEDBYTEACHER':
-      msg = obj.getIntlMessage('ThisSessioncancelled');//'This class has been Cancelled';
+      msg = obj.getIntlMessage('ThisSessioncancelled');// 'This class has been Cancelled';
       break;
     case 'EXPIRED':
-      msg = obj.getIntlMessage('Thissessionnotheld');//'This class was not held';
+      msg = obj.getIntlMessage('Thissessionnotheld');// 'This class was not held';
       break;
 
     default:
@@ -57,26 +49,31 @@ var GetStatusMessage = function(ref, status) {
   return msg;
 };
 
-var ButtonViewRecording = React.createClass({
-  mixins: [IntlMixin],
-  render: function() {
-    var data = this.props.data;
+class ButtonViewRecording extends Component {
+  static propTypes = {
+    data: PropTypes.string
+  };
+
+  render = function render() {
+    const data = this.props.data;
     if (data !== '#') {
-        return (
+      return (
             <div className="col-2">
                 <div className="cta filledOrng2 inline"><a href={data}>{this.getIntlMessage('viewRecording')}</a></div>
             </div>
             );
-      }else {
-        return (<div></div>);
-      }
+    }
+    return (<div></div>);
   }
-});
+}
 
-var ClassScheduleEach = React.createClass({
-  mixins: [IntlMixin],
-  render: function() {
-    var data = this.props.data;
+class ClassScheduleEach extends Component {
+  static propTypes = {
+    data: PropTypes.object
+  };
+
+  render = function render() {
+    const data = this.props.data;
        /* var btnViewRec = function(data){
             if(data.linkViewRecording){
                 return (<ButtonViewRecording data={data.linkViewRecording} />)
@@ -84,13 +81,13 @@ var ClassScheduleEach = React.createClass({
                 return (<ButtonViewRecording data={data.linkViewRecording} />)
             }
         }*/
-    var msg = GetStatusMessage(this, data.status);
+    const msg = getStatusMessage(this, data.status);
     return (
                 <li>
                     <div className="clearfix">
                         <div className="col-1">
                             <p className="recurringDate">{data.startAt}
-                                <FormattedDate value={data.startAt} format='webinars' />
+                                <FormattedDate value={data.startAt} format="webinars" />
                             </p>
                             <p>{this.getIntlMessage('membersAttended')}: {data.membersAttended}</p>
                             <p>{msg}</p>
@@ -100,30 +97,35 @@ var ClassScheduleEach = React.createClass({
                 </li>
             );
   }
-});
+}
 
-var ClassSchedule = React.createClass({
-  mixins: [IntlMixin],
-  render: function() {
-    var data = this.props.data;
-    var scheduleItems = data.map(function(eachScheduleItem) {
-        return (
+class ClassSchedule extends Component {
+  static propTypes = {
+    data: PropTypes.array
+  };
+
+  render = function render() {
+    const data = this.props.data;
+    const scheduleItems = data.map(function createClassSchedule(eachScheduleItem) {
+      return (
                     <ClassScheduleEach key={eachScheduleItem.sessionId} data={eachScheduleItem} />
                 );
-      });
+    });
     return (
                 <ul className="scheduleList">
                     {scheduleItems}
                 </ul>
             );
   }
-});
+}
 
-var MetaDetail = React.createClass({
-  mixins: [IntlMixin],
+class MetaDetail extends Component {
+  static propTypes = {
+    data: PropTypes.object
+  };
 
-  render: function() {
-    var data = this.props.data;
+  render = function render() {
+    const data = this.props.data;
 
     return (
              <section id="webinarsTabs">
@@ -154,7 +156,7 @@ var MetaDetail = React.createClass({
                         </div>
                         <div data-tab="discussion" className="moduleWrapper">
                             <div className="primaryDetail">
-                                <h2 className="title">{this.getIntlMessage('discussionThread')} <span className="count">{/*data.discussion.count*/}0</span></h2>
+                                <h2 className="title">{this.getIntlMessage('discussionThread')} <span className="count">{/* data.discussion.count */}0</span></h2>
                                 <div className="formElement">
                                     <form>
                                         <fieldset>
@@ -175,18 +177,20 @@ var MetaDetail = React.createClass({
                 </section>
         );
   }
-});
+}
 
+export default class WebinarDetail extends Component {
+  static propTypes = {
+    data: PropTypes.obect
+  };
 
-var WebinarDetailSummary = React.createClass({
-  mixins: [IntlMixin],
-  render: function() {
-    var data = this.props.data;
-    var genderCity = data.tutor.gender;
+  render = function render() {
+    const data = this.props.data;
+    let genderCity = data.tutor.gender;
     if (data.tutor.city) genderCity += ' | ' + data.tutor.city;
     if (data.tutor.country) genderCity += ', ' + data.tutor.country;
-    var status = data.classStart.status;
-    var msg = GetStatusMessage(this, status);
+    const status = data.classStart.status;
+    const msg = getStatusMessage(this, status);
 
     return (
             <div>
@@ -267,14 +271,4 @@ var WebinarDetailSummary = React.createClass({
             </div>
         );
   }
-});
-
-//*****************************************************************
-//  YOUR CODE ENDS HERE
-//*****************************************************************
-
-if (isNode) {
-  module.exports = WebinarDetailSummary;
-} else {
-  window.Section = WebinarDetailSummary;
 }

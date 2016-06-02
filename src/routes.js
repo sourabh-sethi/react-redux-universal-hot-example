@@ -7,7 +7,8 @@ import {
     Home,
     Widgets,
     About,
-    Hello,
+    Webinars,
+    WebinarDetails,
     Login,
     LoginSuccess,
     Survey,
@@ -48,7 +49,8 @@ export default (store) => {
 
       { /* Routes */ }
       <Route path="about" component={About}/>
-      <Route path="hello" component={Hello}/>
+      <Route path="webinars" component={Webinars} />
+      <Route path="online-class/:idClass" component={WebinarDetails} />
       <Route path="login" component={Login}/>
       <Route path="survey" component={Survey}/>
       <Route path="widgets" component={Widgets}/>

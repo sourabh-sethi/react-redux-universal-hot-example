@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { IndexLink } from 'react-router';
+import { IndexLink, Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
@@ -90,8 +90,8 @@ export default class App extends Component {
               <LinkContainer to="/about">
                 <NavItem eventKey={4}>About Us</NavItem>
               </LinkContainer>
-              <LinkContainer to="/hello">
-                <NavItem eventKey={99}>Hello</NavItem>
+              <LinkContainer to="/webinars">
+                <NavItem eventKey={99}>Webinars</NavItem>
               </LinkContainer>
 
               {!user &&
@@ -116,6 +116,7 @@ export default class App extends Component {
         </Navbar>
 
         <div className={styles.appContent}>
+          <Link to="/webinars">Test Link</Link>
           {this.props.children}
         </div>
         <InfoBar/>
