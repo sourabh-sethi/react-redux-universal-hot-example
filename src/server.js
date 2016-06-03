@@ -18,7 +18,7 @@ import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 import createHistory from 'react-router/lib/createMemoryHistory';
 import { Provider} from 'react-intl-redux';
 import getRoutes from './routes';
-import i18n from './i18n/index.js';
+import I18n from './i18n/index.js';
 
 const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
 const targetUrl2 = 'http://www.catapult-system-product-name.com:8051';
@@ -79,8 +79,8 @@ app.use((req, res) => {
   }
   const client = new ApiClient(req);
   const memoryHistory = createHistory(req.originalUrl);
-  const i18nInstance = new i18n();
-  const data = {'intl':{'locale':i18nInstance.getLanguage().getCulture(), 'messages':i18nInstance.getCurrentLocalizedString()}};
+  const i18nInstance = new I18n();
+  const data = { 'intl': { 'locale': i18nInstance.getLanguage().getCulture(), 'messages': i18nInstance.getCurrentLocalizedString()}};
 
   const store = createStore(memoryHistory, client, data);
   const history = syncHistoryWithStore(memoryHistory, store);
