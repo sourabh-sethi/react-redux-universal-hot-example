@@ -32,6 +32,12 @@ module.exports = Object.assign({
         {property: 'og:creator', content: '@WizIQ'},
         {property: 'og:image:width', content: '200'},
         {property: 'og:image:height', content: '200'}
+      ],
+      link: [
+        {'rel': 'stylesheet', 'type': 'text/css', 'href': '/static/assets/styles/material.min.css' },
+        {'rel': 'stylesheet', 'type': 'text/css', 'href': 'assets/styles/animate.css'},
+        {'rel': 'stylesheet/less', 'type': 'text/css', 'href': '/static/assets/styles/custom.less'}
+
       ]
     }
   },

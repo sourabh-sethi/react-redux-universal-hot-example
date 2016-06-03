@@ -1,0 +1,256 @@
+@import "icons";
+
+// Global variables*/
+    @primaryColor: #F78200;
+    @secondaryColor: #1D82D4;
+    @accentColor: #f5f5f5;
+    @primaryText: #000; 
+    @secondaryText: #FFF;
+    @bgColors: #FFF;
+    @fontIconSmall: 18px;
+    @maxGridWidth: 1280px;
+    @display1FontSize: 34px;
+    @headlineFontSize: 24px;
+    @subheadingFontSize: 18px;
+    @regularFontSize: 14px;
+    @titleFontSize: 20px;
+    @gloalFontFamily: "Roboto", "Helvetica", "Arial", sans-serif;
+    
+/*** Common Styles *** START ***/
+    .list { margin: 0; padding: 0; list-style: none;}
+    .maxGridSize { max-width: @maxGridWidth;}
+    figure { margin: 0; padding: 0;}
+    .fl { float: left;}
+    .fr { float: right;}
+    ul { margin: 0; padding: 0; list-style: none;}
+/*** Common Styles *** END ***/
+
+/*** Less Mixin *** END ***/
+    .color (@baseColor, @opacity) {color: rgba(red(@baseColor),green(@baseColor),blue(@baseColor), @opacity);}
+    .bgColor (@baseColor, @opacity) {background-color: rgba(red(@baseColor),green(@baseColor),blue(@baseColor), @opacity);}
+/*** Less Mixin *** END ***/
+
+/*** Custom Styles for MDL Component *** START ***/
+    html, body { background-color: @accentColor; font-family: @gloalFontFamily;}
+    .mdl-textfield__label::after { background-color: @secondaryColor;} 
+    a { color: @secondaryColor;}
+    .mdl-layout__header { box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12); position: relative; z-index: 10; animation-duration: 0.6s;}
+    .mdl-layout__content { animation-duration: 0.6s;} 
+    .mdl-button--accent.mdl-button--accent.mdl-button--raised, .mdl-button--accent.mdl-button--accent.mdl-button--fab { .bgColor(@primaryColor, 100);}
+    .mdl-mini-footer { background-color: @bgColors; .color(@primaryText, 100); padding: 32px 80px;
+        @media only screen and (max-width: 767px){
+            padding: 32px 20px; text-align: center; justify-content: center;
+        }
+    }
+    .mdl-layout__header-row {}
+/*** Custom Styles for MDL Component *** END ***/
+
+/*** Header *** START ***/
+.mdl-layout__header { background-color: @bgColors; .color(@primaryText, 100);
+    .mdl-navigation__link, .mdl-layout__drawer-button, .primaryNav { .color(@primaryText, 100);}
+    .primaryNav { .list; font-size: 0;
+        li { display: inline-block;
+            &.signIn { position: relative;
+                &:before { content: ''; position: absolute; left: 0; top: 15%; width: 1px; height: 70%; background-color: @primaryText; opacity: 0.2;}
+            }
+        }
+    }
+}
+/*** Header *** END ***/
+
+/*** Bread Crumbs *** START ***/
+    .breadCrumbs {
+        ul { .list;
+            li { display: inline-block; .color(@primaryText, 0.50);
+                a { text-decoration: none; .color(@primaryText, 100);}
+                .material-icons { font-size: @fontIconSmall; position: relative; top: 4px; left: 1px;}
+            }
+        }
+    }    
+/*** Bread Crumbs *** END ***/
+
+/*** Primary Cards *** START ***/
+    @cardWidth: 100%;
+    @cardHeight: 440px;
+
+    .primaryDetailCard { width: @cardWidth;
+        ul { list-style: disc inside; margin: 0 0 16px 0;} 
+        .cardtitle { padding: 16px 16px 0;}
+        .mdl-card__title-text { font-size: @display1FontSize;}
+        .mdl-card__subtitle-text { font-size: @subheadingFontSize - 2;}
+        .cardWrap { padding: 16px; overflow: hidden; position: relative; .color(@primaryText, 0.70);
+            &:after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 30px; 
+                -webkit-box-shadow: inset 0px -13px 8px 0px rgba(255, 255, 255, 0.75);
+                -moz-box-shadow: inset 0px -13px 8px 0px rgba(255, 255, 255, 0.75);
+                box-shadow: inset 0px -13px 8px 0px rgba(255, 255, 255, 0.75);}
+            .contentImg { float: left; margin: 0 16px 16px 0;
+                img { max-width: 320px; height: auto;}
+            }
+            &.noPad { padding-top: 0;}
+        }
+        .btnWrap { padding: 16px 0 16px; text-align: center;
+            .mdl-button {
+                .remove { display: none;}
+                &.expended {
+                    .add { display: none;}
+                    .remove { display: inline-block;}    
+                }
+            }
+        }    
+    }
+    .primaryAsideCard { width: @cardWidth; min-height: @cardHeight; .color(@primaryText, 0.70);
+        .cardWrap { padding: 16px; position: relative;
+            &:after { content: ''; width: 100%; height: 1px; .bgColor(@primaryText, 0.12); position: absolute; left: 0; bottom: 0;}
+            &:last-child {
+                &:after { display: none;}    
+            }
+            .price { margin: 0; font-size: @headlineFontSize; .color(@primaryText, 100);}
+        }
+    }
+/*** Primary Cards *** END ***/
+
+/*** Meta List *** START ***/
+    .metaList { 
+        li { line-height: 20px; margin-bottom: 6px; position: relative;
+            .listCol { margin-left: 30px;}
+            &:last-child { margin-bottom: 0;}
+            .material-icons { font-size: @fontIconSmall; position: relative; vertical-align: top; position: absolute; left: 0; top: 0;}
+        }
+        
+        &.shade2 {
+            .material-icons { .color(@secondaryColor, 100);}
+        }
+        &.shade3 {
+            .material-icons { .color(@secondaryColor, 0.50);}
+        }
+    }
+
+    .relatedInfoList {
+        li { padding: 16px; position: relative;
+            &:after { content: ''; width: 100%; height: 1px; .bgColor(@primaryText, 0.12); position: absolute; left: 0; bottom: 0;}
+            &:last-child {
+                &:after { display: none;}    
+            }
+        }
+        figure { position: relative;
+            .wrap { width: 50px; height: 26px; display: inline-block; position: absolute; left: 0; top: 0;
+                img { width: 50px; height: auto;}
+            }
+            figcaption { display: block; margin-left: 66px;
+                p { line-height: normal; margin: 0;}
+            } 
+        }
+    }
+
+    .links { display: inline-block;
+        > li { display: inline-block;
+            &:first-child { position: relative; padding-right: 16px; margin-right: 16px;
+                &:after { content: ''; width: 1px; height: 100%; .bgColor(@primaryText, 0.12); position: absolute; right: 0; top: -10px; padding: 10px 0;}
+                @media only screen and (max-width: 767px){
+                    padding-right: 0; margin-right: 0; margin-bottom: 16px; display: block;
+                    .caption { display: block;}
+                    &:after {display: none;}
+                }
+            }
+        }
+        .caption { display: inline-block; margin: 4px 10px 0 0;}
+    }
+
+    .socialIcoList {display: inline-block; vertical-align: top;
+        @iconWidthHeight: 32px;
+
+        li { display: inline-block; vertical-align: top; width: @iconWidthHeight; margin-right: 14px; 
+            a { display: block; width: @iconWidthHeight; height: @iconWidthHeight; .bgColor(@primaryText, 0.70); border-radius: 20px; color: @secondaryText; text-align: center;
+                i { position: relative; top: 7px; font-size: @fontIconSmall;}
+            }
+            &.gP {
+                a {
+                    i { font-size: @headlineFontSize; top: 5px;}
+                }
+                &:hover {
+                    a { background-color: #DB4437;}    
+                }
+            }
+            &.fB:hover { 
+                a { background-color: #3B5998;}
+            }
+            &.yT:hover { 
+                a { background-color: #E32524;}
+            }
+            &.tW:hover { 
+                a { background-color: #57AEE7;}
+            }
+            &.iN:hover { 
+                a { background-color: #0077B5;}
+            }
+            &.android:hover { 
+                a { 
+                    i { color: #77c159;}
+                }
+            }
+            &.apple:hover { 
+                a { 
+                    i { color: #c6c7c9;}
+                }
+            }
+            &:last-child { margin-right: 0;}
+        }
+
+        &.noBg {
+            li {
+                a { background: none; .color(@primaryText, 0.70);
+                    i { font-size: @display1FontSize; top: 0;}
+                }
+            }
+        }
+    }
+/*** Meta List *** END ***/
+
+/*** Regular Card *** START ***/
+    .regularCardBody { .color(@primaryText, 0.70); margin-bottom: 16px;
+        .title { font-size: @headlineFontSize; margin: 0 0 16px; line-height: 34px;} 
+        .regularCard { width: 100%; padding: 16px; min-height: 100px;
+            &.noPad { padding: 0; min-height: 50px;}
+        }
+        .metaList {
+            li { margin-bottom: 16px;
+                &:last-child { margin-bottom: 0;}
+            }
+        }
+        &:last-child { margin-bottom: 0;}
+        .subtitle { font-size: @subheadingFontSize - 2; position: relative; padding: 0 0 16px 0; margin-bottom: 16px;  
+            &:after { content: ''; .bgColor(@primaryText, 0.12); width: 100%; height: 1px; position: absolute; left: -16px; bottom: 0; padding: 0 16px;}
+        }
+    }
+/*** Regular Card *** END ***/
+
+/*** Image Thumb *** START ***/
+    .userThumb { padding: 16px;
+        .wrap { display: inline-block; border-radius: 50px; width: 60px; height: 60px; overflow: hidden; text-align: center;}
+        img { width: auto; height: 60px; display: inline-block;}
+        figcaption { display: inline-block; vertical-align: top; font-size: @regularFontSize; padding-left: 14px;
+            small { display: block;}
+        }
+    }
+/*** Image Thumb *** END ***/
+
+/*** Footer *** START ***/
+    .mdl-mini-footer {
+        
+    }
+/*** Footer *** END ***/
+
+/*** waterFallTabs *** START ***/
+    #waterFallTabs { width: 100%; opacity: 0; box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12); .bgColor(@bgColors, 100); position: absolute; z-index: 5; left: 0; top: 0; animation-duration: 0.6s; 
+        .mdl-grid { padding-top: 0; padding-bottom: 0;}
+        .mdl-cell { margin-top: 0; margin-bottom: 0;}
+        .tabs {
+            li { display: inline-block; padding: 20px 56px; cursor: pointer;
+                &:hover { .bgColor(@primaryText, 0.12);}
+                &.active { .bgColor(@primaryText, 0.70); .color(@secondaryText, 100);}
+            }
+        }
+    }
+/*** waterFallTabs *** END ***/
+
+
