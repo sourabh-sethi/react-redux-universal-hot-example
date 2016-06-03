@@ -60,7 +60,6 @@ export default class App extends Component {
 
   render() {
     const {user} = this.props;
-    const styles = require('./App.scss');
     return (
       <div>
         <Helmet {...config.app.head}/>
